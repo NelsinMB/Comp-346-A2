@@ -26,15 +26,15 @@ public class Computer {
         //Choose which scheduling class to use
         switch (algorithm) {
             case FCFS:
-            this.CPUScheduler = new FCFS(this, processors, processes); //Pass the computer, processors, and processes to scheduler
+            setCPUScheduler(new FCFS(this, processors, processes)); //Pass the computer, processors, and processes to scheduler
             break;
 
             case SJB:
-            this.CPUScheduler = new SJB(this, processors, processes); //Pass the computer, processors, and processes to scheduler
+            setCPUScheduler(new SJB(this, processors, processes)); //Pass the computer, processors, and processes to scheduler
             break;
 
             case RR:
-            this.CPUScheduler = new RR(this, processors, processes); //Pass the computer, processors, and processes to scheduler
+            setCPUScheduler(new RR(this, processors, processes)); //Pass the computer, processors, and processes to scheduler
             break;
         }
 
@@ -80,6 +80,14 @@ public class Computer {
 
     public void setTimeQuantum(int timeQuantum) {
         this.timeQuantum = timeQuantum;
+    }
+
+    public CPUScheduler getCPUScheduler() {
+        return this.CPUScheduler;
+    }
+
+    public void setCPUScheduler(CPUScheduler CPUScheduler) {
+        this.CPUScheduler = CPUScheduler;
     }
     
 

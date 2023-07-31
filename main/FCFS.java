@@ -11,7 +11,7 @@ public class FCFS extends CPUScheduler {
     public FCFS(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes) {
         super(computer, processors, processes);
         loadProcessesIntoReadyQueue();
-
+        execute();
     }
 
     /*
@@ -23,6 +23,11 @@ public class FCFS extends CPUScheduler {
         for (int index = 0; index < super.getProcesses().size(); index++) {
             super.getReadyQueue().add(super.getProcesses().get(index));
         }
+    }
+    
+    
+    public void execute() {
+
     }
 
 
