@@ -1,12 +1,15 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class CPUScheduler {
 
     private Computer computer;
     private ArrayList<Processor> processors;
     private ArrayList<Process> processes;
+    private Queue<Process> readyQueue = new LinkedList<Process>();
 
 
     public CPUScheduler(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes ) {
@@ -39,4 +42,8 @@ public class CPUScheduler {
         this.processes = processes;
     }
     
+    public Queue<Process> getReadyQueue() {
+        return this.readyQueue;
+    }
+
 }

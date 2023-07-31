@@ -8,11 +8,6 @@ import java.util.Queue;
 
 public class FCFS extends CPUScheduler {
 
-    private Computer computer;
-    private ArrayList<Processor> processors;
-    private ArrayList<Process> processes;
-    private Queue<Process> readyQueue = new LinkedList<Process>(); 
-
     public FCFS(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes) {
         super(computer, processors, processes);
         loadProcessesIntoReadyQueue();
@@ -24,9 +19,10 @@ public class FCFS extends CPUScheduler {
      * The head node is the process with the earliest arrival time, the tail node is the process with the latest arrival time.
      */
     public void loadProcessesIntoReadyQueue() {
-        Collections.sort(processes, Comparator.comparing(Process::getArrivalTime));
-
-
+        Collections.sort(super.getProcesses(), Comparator.comparing(Process::getArrivalTime));
+        for (int index = 0; index < super.getProcesses().size(); index++) {
+            super.getReadyQueue().add(super.getProcesses().get(index));
+        }
     }
 
 

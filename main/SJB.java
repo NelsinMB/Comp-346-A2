@@ -6,9 +6,7 @@ import java.util.Comparator;
 
 public class SJB extends CPUScheduler {
 
-    private Computer computer;
-    private ArrayList<Processor> processors;
-    private ArrayList<Process> processes;
+
 
     public SJB(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes) {
         super(computer, processors, processes);
@@ -22,7 +20,10 @@ public class SJB extends CPUScheduler {
      * the process with the longest exec time.
      */
     public void loadProcessesIntoReadyQueue() {
-        Collections.sort(processes, Comparator.comparing(Process::getTotalExecTime));
+        Collections.sort(super.getProcesses(), Comparator.comparing(Process::getTotalExecTime));
+        for (int index = 0; index < super.getProcesses().size(); index++) {
+            super.getReadyQueue().add(super.getProcesses().get(index));
+        }
     }
 
 }
