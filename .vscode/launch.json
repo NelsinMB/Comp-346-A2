@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Sim",
+            "request": "launch",
+            "mainClass": "Sim",
+            "projectName": "Assignment 2_81b2b578"
+        },
+        "name",
+        "type",
+        "request",
+        "program",
+        "args"
+    ]
+}
