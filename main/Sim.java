@@ -8,6 +8,7 @@ public class Sim {
     static int numberOfCPUs;
     static int timeQuantum;
     static ArrayList<Process> processes = new ArrayList<Process>();
+    static Computer computer;
 
 
     public static void main(String args[]) {
@@ -22,10 +23,32 @@ public class Sim {
             while (scanner.hasNextLine()) {
                 processesString.add(scanner.nextLine());
             }
+            scanner.close();
             numberOfCPUs = extractNumOfCPUs(numOfCPUsString);
             timeQuantum = extractTimeQuantum(timeQuantumString);
             processes = extractProcesses(processesString);
 
+            System.out.println("What algorithm would you like to run (FCFS, SJB, RR)?");
+            Scanner scanner2 = new Scanner(System.in);
+            String algorithmInput = scanner2.nextLine();
+            switch (algorithmInput) {
+                case "FCFS":
+                    computer = new Computer(Algorithm.FCFS, numberOfCPUs, timeQuantum, processes);
+                break;
+
+                case "SJB": 
+                    computer = new Computer(Algorithm.SJB, numberOfCPUs, timeQuantum, processes);
+
+                break;
+
+                case "RR":
+                    computer = new Computer(Algorithm.RR, numberOfCPUs, timeQuantum, processes);
+
+                break;
+            }
+            scanner2.close();
+
+            /* 
             System.out.println("numberOfCPUs: " + numberOfCPUs);
             System.out.println("timeQuantum: " + timeQuantum);
             System.out.println("Processes:" );
@@ -37,6 +60,8 @@ public class Sim {
                     System.out.println(i);
                 }
             }
+            */
+
 
         } catch (Exception e) {
             e.printStackTrace();
