@@ -1,16 +1,14 @@
+package main;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 public class Sim {
 
     static int numberOfCPUs;
     static int timeQuantum;
-    static ArrayList<Integer> processes = new ArrayList<Integer>();
-    HashMap<String, Integer> arrivalTimes = new HashMap<String, Integer>();
-    HashMap<String, Integer> totalExecTimes = new HashMap<String, Integer>();
-    HashMap<String, int[]> IOrequestTimes = new HashMap<String, int[]>();
+    static ArrayList<Process> processes = new ArrayList<Process>();
+
 
     public static void main(String args[]) {
         try {
@@ -19,13 +17,26 @@ public class Sim {
             String timeQuantumString = scanner.nextLine();
             ArrayList<String> processesString = new ArrayList<String>();
 
-            scanner.nextLine();
-            scanner.nextLine();
+            scanner.nextLine(); //Skip third line
+            scanner.nextLine(); //Skip fourth line
             while (scanner.hasNextLine()) {
                 processesString.add(scanner.nextLine());
             }
             numberOfCPUs = extractNumOfCPUs(numOfCPUsString);
             timeQuantum = extractTimeQuantum(timeQuantumString);
+            processes = extractProcesses(processesString);
+
+            System.out.println("numberOfCPUs: " + numberOfCPUs);
+            System.out.println("timeQuantum: " + timeQuantum);
+            System.out.println("Processes:" );
+            for (Process p : processes) {
+                System.out.println("ProcessID: " + p.getProcessID());
+                System.out.println("timeQuantum: " + p.getArrivalTime());
+                System.out.println("totalExecTime: " + p.getTotalExecTime());
+                for (Integer i : p.getIORequestAtTimes()) {
+                    System.out.println(i);
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,24 +54,28 @@ public class Sim {
         return timeQuantum;
     }
 
-    public static ArrayList<Integer> extractProcesses(ArrayList<String> processes) {
-        ArrayList<Integer> IORequestAtTimesArray = new ArrayList<Integer>();
-        for (String s : processes) {
-            System.out.println(s);
+    public static ArrayList<Process> extractProcesses(ArrayList<String> processesAsStrings) {
+        ArrayList<Process> processes = new ArrayList<Process>();
+        for (String s : processesAsStrings) {
             String chopped[] = s.split("\t");
-            String IORequestAtTimes = chopped[3];
-            IORequestAtTimes = IORequestAtTimes.substring(1, IORequestAtTimes.length() - 1);
-            System.out.println(IORequestAtTimes);
-            String choppedAgain[] = IORequestAtTimes.split(",");
-            for (String p : choppedAgain) {
-                if (p != "") {
-                    IORequestAtTimesArray.add(Integer.valueOf(p));
+            String processID = chopped[0];
+            int arrivalTime = Integer.valueOf(chopped[1]);
+            int totalExecTime = Integer.valueOf(chopped[2]);
+
+            String IORequestAtTimesString = chopped[3];
+            IORequestAtTimesString = IORequestAtTimesString.substring(1, IORequestAtTimesString.length() - 1);
+            String IORequestAtTimesChopped[] = IORequestAtTimesString.split(",");
+            ArrayList<Integer> IORequestAtTimes = new ArrayList<Integer>();
+            for (String time : IORequestAtTimesChopped) {
+                if (time != "") { //"" if array is empty
+                    IORequestAtTimes.add(Integer.valueOf(time));
                 }
 
             }
-
+            Process newProcess = new Process(processID, arrivalTime, totalExecTime, IORequestAtTimes);
+            processes.add(newProcess);
         }
-        return IORequestAtTimesArray;
+        return processes;
     }
 
 }

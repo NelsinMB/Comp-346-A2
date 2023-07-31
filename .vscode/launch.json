@@ -4,7 +4,7 @@
             "type": "java",
             "name": "Sim",
             "request": "launch",
-            "mainClass": "Sim",
+            "mainClass": "main.Sim",
             "projectName": "Assignment 2_81b2b578"
         },
         "name",
