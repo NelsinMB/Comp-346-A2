@@ -5,7 +5,7 @@ import java.util.Queue;
 
 public class Processor {
     private Process currentProcess;
-    private Queue<Process> readyQueue = new LinkedList<Process>();
+    private Queue<Process> readyQueue = new LinkedList<Process>(); //Does each process still have a queue?
 
 
     public Processor() {

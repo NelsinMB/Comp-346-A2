@@ -2,7 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
-public class Process {
+public class Process implements Comparable {
     private String processID;
     private int arrivalTime;
     private int totalExecTime;
@@ -15,6 +15,8 @@ public class Process {
         this.totalExecTime = totalExecTime;
         this.IORequestAtTimes = IORequestAtTimes;
     }
+
+   
 
     public String getProcessID() {
         return this.processID;
@@ -50,6 +52,17 @@ public class Process {
 
     public void setPCB(PCB pcb) {
         this.pcb = pcb;
+    }
+
+
+
+    @Override
+    public int compareTo(Process comparePro) {
+        int compare = ((Process)comparePro).getArrivalTime();
+        return this.arrivalTime-compare;
+
+
+        
     }
 
     

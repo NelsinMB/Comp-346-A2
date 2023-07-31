@@ -9,6 +9,7 @@ public class Computer {
     private ArrayList<Process> processes;
     private int numberOfCPUs;
     private int timeQuantum;
+    private CPUScheduler CPUScheduler; 
 
 
     public Computer(Algorithm algorithm, int numberOfCPUs, int timeQuantum, ArrayList<Process> processes) {
@@ -21,6 +22,23 @@ public class Computer {
         for (int processorIndex = 0; processorIndex < numberOfCPUs; processorIndex++) {
             processors.add(new Processor());
         }
+
+        //Choose which scheduling class to use
+        switch (algorithm) {
+            case FCFS:
+            this.CPUScheduler = new FCFS(this, processors, processes); //Pass the computer, processors, and processes to scheduler
+            break;
+
+            case SJB:
+            this.CPUScheduler = new SJB(this, processors, processes); //Pass the computer, processors, and processes to scheduler
+            break;
+
+            case RR:
+            this.CPUScheduler = new RR(this, processors, processes); //Pass the computer, processors, and processes to scheduler
+            break;
+        }
+
+
 
     }
 
