@@ -22,11 +22,9 @@ public class Process {
         if (IOInstruction()) {
             readyToWaiting();
             this.processor.getComputer().getIO().getWaitQueue().add(this); // Add this process to waitQueue of IO
-            
-
         } else if (lastInstruction()) {
             readyToTerminate();
-           
+            return;
         }
 
         // *Make sure this should be after terminate
