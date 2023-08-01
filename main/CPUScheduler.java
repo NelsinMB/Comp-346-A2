@@ -10,12 +10,15 @@ public class CPUScheduler {
     private ArrayList<Processor> processors;
     private ArrayList<Process> processes;
     private Queue<Process> readyQueue = new LinkedList<Process>();
+    private boolean active;
 
 
     public CPUScheduler(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes ) {
         this.computer = computer;
+        computer.setCPUScheduler(this); //Necessary
         this.processors = processors;
         this.processes = processes;
+        this.active = true;
     }
 
     public void newToReady(Process process) {
@@ -62,6 +65,13 @@ public class CPUScheduler {
         return this.readyQueue;
     }
 
+    public boolean getActive() {
+        return this.active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
    
 
    

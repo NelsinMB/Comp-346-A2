@@ -5,22 +5,27 @@ import java.util.Queue;
 
 public class IO {
 
+    private Computer computer;
     private Queue<Process> waitQueue;
 
-    public IO () {
+    public IO(Computer computer) {
+        setComputer(computer);
         this.waitQueue = new LinkedList<Process>();
     }
 
     public void tick() {
         for (Process process : waitQueue) {
-            process.getPCB().setWaitQueueTime(process.getPCB().getWaitQueueTime() - 1); //Decrement on waitQueue
-            if (process.getPCB().getWaitQueueTime() == 0) { //If process has completed it's I/O
-                removeFromQueue(process);
-            }
+            process.getPCB().setWaitQueueTime(process.getPCB().getWaitQueueTime() - 1); // Decrement on waitQueue
+        }
+        while (waitQueue.element() != null) {
+            
         }
 
+        if (!waitQueue.isEmpty()) {
+            getComputer().getCPUScheduler().setActive(true);
+        }
 
-     }
+    }
 
     public Queue<Process> getWaitQueue() {
         return this.waitQueue;
@@ -32,8 +37,16 @@ public class IO {
 
     public void removeFromQueue(Process process) {
         waitQueue.remove(process);
-        process.waitingToReady(); 
+        getComputer().getCPUScheduler().getReadyQueue().add(process);
+        process.waitingToReady();
     }
-    
-    
+
+    public Computer getComputer() {
+        return this.computer;
+    }
+
+    public void setComputer(Computer computer) {
+        this.computer = computer;
+    }
+
 }

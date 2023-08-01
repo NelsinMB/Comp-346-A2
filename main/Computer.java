@@ -19,7 +19,7 @@ public class Computer {
         this.timeQuantum = timeQuantum;
         this.processes = processes;
         this.processors = new ArrayList<Processor>();
-        this.IO = new IO();
+        this.IO = new IO(this);
 
         // Create processors, number is indicated by numberOfCPUs
         for (int processorIndex = 0; processorIndex < numberOfCPUs; processorIndex++) {

@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class FCFS extends CPUScheduler {
-
+    
+    
     public FCFS(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes) {
         super(computer, processors, processes);
         initialTransfer(); //transfer processes passed in to waitQueue
@@ -26,7 +27,9 @@ public class FCFS extends CPUScheduler {
      */
     public void execute() {
         while (true) {
+            super.setActive(false);
             while (!super.getReadyQueue().isEmpty()) {
+                super.setActive(true);
                 Process nextProcess = super.getReadyQueue().remove();
                 Processor freeProcessor = freeProcessor();
                 if (freeProcessor() != null) {
@@ -38,6 +41,11 @@ public class FCFS extends CPUScheduler {
             }
             tick();
             tickPrint();
+
+            if (getActive() == false) {
+                break;
+            }
+
         }
         
     }
@@ -45,6 +53,7 @@ public class FCFS extends CPUScheduler {
     public void tick() {
         for (Processor processor : super.getProcessors()) {
             if (processor.getCurrentProcess() != null) {
+                super.setActive(true);
                 processor.getCurrentProcess().executeInstruction();
                 if (processor.getCurrentProcess().getPCB().getProcessState() != State.RUNNING) {
                     processor.setCurrentProcess(null);
@@ -68,7 +77,7 @@ public class FCFS extends CPUScheduler {
         }
 
         for (Process process : getComputer().getIO().getWaitQueue()) {
-            System.out.println("The proceess with ID" +  process.getProcessID() + " has " + process.getPCB().getWaitQueueTime() + " time left in the wait queue");
+            System.out.println("The proceess with ID " +  process.getProcessID() + " has " + process.getPCB().getWaitQueueTime() + " time left in the wait queue");
         }
         System.out.println("=======");
     }
