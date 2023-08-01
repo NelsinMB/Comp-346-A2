@@ -4,10 +4,10 @@ public class PCB {
     Process process;
     State processState;
     int programCounter = 0;
-    int timeAtIO = 0;
+    int timeAtIO;
 
     public PCB() {
-
+        timeAtIO = 0;
     }
 
     public Process getProcess() {

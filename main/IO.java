@@ -21,7 +21,7 @@ public class IO {
             getComputer().getCPUScheduler().setActive(true);
 
             process.getPCB().setTimeAtIO(process.getPCB().getTimeAtIO() + 1); // Decrement on waitQueue
-            if (process.getPCB().getTimeAtIO() == 2) {
+            if (process.getPCB().getTimeAtIO() == 3) { //Allow to start at 1 instead of 2, thus use 3
                 removeFromQueue(process);
 
             }

@@ -8,8 +8,8 @@ public class Process {
     private int totalExecTime;
     private ArrayList<Integer> IORequestAtTimes;
     PCB pcb;
-    private Processor processor; //The processor the process is running on
-    
+    private Processor processor; // The processor the process is running on
+
     public Process(String processID, int arrivalTime, int totalExecTime, ArrayList<Integer> IORequestAtTimes) {
         this.processID = processID;
         this.arrivalTime = arrivalTime;
@@ -21,17 +21,18 @@ public class Process {
     public void executeInstruction() {
         if (IOInstruction()) {
             readyToWaiting();
-            this.processor.getComputer().getIO().getWaitQueue().add(this); //Add this process to waitQueue of IO
-            getPCB().setProgramCounter(getPCB().getProgramCounter() + 1); //Need this here so it is handled before return, to avoid terminating before wait is done
-            return;
-        }
+            this.processor.getComputer().getIO().getWaitQueue().add(this); // Add this process to waitQueue of IO
+            
 
-        if (lastInstruction()) {
+        } else if (lastInstruction()) {
             readyToTerminate();
+           
         }
 
         // *Make sure this should be after terminate
-        getPCB().setProgramCounter(getPCB().getProgramCounter() + 1); //Need this here so it is handled before return, to avoid terminating before wait is done
+            getPCB().setProgramCounter(getPCB().getProgramCounter() + 1);
+        
+
     }
 
     public Boolean lastInstruction() {
@@ -43,7 +44,7 @@ public class Process {
     }
 
     public Boolean IOInstruction() {
-        if (IORequestAtTimes.contains(getPCB().getProgramCounter()-1)) { //If currentInstruction is an IO request
+        if (IORequestAtTimes.contains(getPCB().getProgramCounter() - 1)) { // If currentInstruction is an IO request
             return true;
         } else {
             return false;
@@ -65,20 +66,19 @@ public class Process {
     }
 
     public void readyToWaiting() {
-        this.getPCB().setProcessState(State.WAITING);
-        this.getPCB().setTimeAtIO(1); //2 ticks for I/O
+        getPCB().setProcessState(State.WAITING);
+        this.getPCB().setTimeAtIO(1); // 2 ticks for I/O
     }
 
     public void waitingToReady() {
         this.getPCB().setProcessState(State.READY);
     }
-   
 
     public String getProcessID() {
         return this.processID;
     }
 
-    public void setProcessID(String processID){ 
+    public void setProcessID(String processID) {
         this.processID = processID;
     }
 
@@ -118,8 +118,4 @@ public class Process {
         this.processor = processor;
     }
 
-   
-
-    
-    
 }
