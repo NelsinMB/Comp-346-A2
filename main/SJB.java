@@ -10,20 +10,29 @@ public class SJB extends CPUScheduler {
 
     public SJB(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes) {
         super(computer, processors, processes);
-        loadProcessesIntoReadyQueue();
+        initialTransfer();
+        execute();
 
     }
 
+    public void execute() {
+        for (Process p : this.getReadyQueue()) {
+            System.out.println(p.getProcessID()); 
+        }
+    }
+
     /*
-     * This function adds processes passed to the scheduler into the ready queue.
-     * The head node is the process with the shortest exec time, the tail node is
-     * the process with the longest exec time.
+     * void initialTransfer
+     * This method is responsible for the initial transfer of processes to the readyQueue.
+     * The head node is the process with the earliest arrival time, the tail node is the process with the latest arrival time.
      */
-    public void loadProcessesIntoReadyQueue() {
+    public void initialTransfer() {
         Collections.sort(super.getProcesses(), Comparator.comparing(Process::getTotalExecTime));
         for (int index = 0; index < super.getProcesses().size(); index++) {
             super.getReadyQueue().add(super.getProcesses().get(index));
         }
     }
+
+
 
 }

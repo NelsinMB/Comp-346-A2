@@ -18,6 +18,22 @@ public class CPUScheduler {
         this.processes = processes;
     }
 
+    public void newToReady(Process process) {
+        getReadyQueue().add(process);
+        process.newToReady();
+    }
+    
+    public void readyToRunning(Processor processor, Process process) {
+        processor.setCurrentProcess(process);
+        process.readyToRunning(processor);
+    }
+
+    public void readyToWaiting(Process process) {
+        process.readyToWaiting();
+        computer.getIO().getWaitQueue().add(process); 
+        // *Need to manage processes on waitQueue *
+    }
+
     public Computer getComputer() {
         return this.computer;
     }
@@ -45,5 +61,9 @@ public class CPUScheduler {
     public Queue<Process> getReadyQueue() {
         return this.readyQueue;
     }
+
+   
+
+   
 
 }
