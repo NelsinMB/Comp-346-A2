@@ -9,7 +9,7 @@ public class FCFS extends CPUScheduler {
     
     public FCFS(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes) {
         super(computer, processors, processes);
-        initialTransfer(); //transfer processes passed in to waitQueue
+        // initialTransfer(); //transfer processes passed in to waitQueue
         execute();
     }
 
@@ -26,7 +26,16 @@ public class FCFS extends CPUScheduler {
      * 4. 
      */
     public void execute() {
+
+        //Add processes that have arrival times that correspond with clock
         while (true) {
+            for (Process process : getProcesses()) {
+                if (super.getClock() == process.getArrivalTime()) {
+                    newToReady(process);
+                }
+            }
+
+
             super.setActive(false);
             while (!super.getReadyQueue().isEmpty()) {
                 super.setActive(true);
@@ -45,6 +54,8 @@ public class FCFS extends CPUScheduler {
             if (getActive() == false) {
                 break;
             }
+
+            super.setClock(getClock() + 1);
 
         }
         
@@ -69,15 +80,16 @@ public class FCFS extends CPUScheduler {
 
     public void tickPrint() {
         System.out.println("======");
+        System.out.println("CLOCK: " + super.getClock());
         for (Processor processor : super.getProcessors()) {
             if (processor.getCurrentProcess() != null) {
                 System.out.println("Process ID:" + processor.getCurrentProcess().getProcessID());
-                System.out.println("program counter: " + processor.getCurrentProcess().getPCB().getProgramCounter());
+                System.out.println("Program counter (next instruction): " + processor.getCurrentProcess().getPCB().getProgramCounter());
             }
         }
 
         for (Process process : getComputer().getIO().getWaitQueue()) {
-            System.out.println("The proceess with ID " +  process.getProcessID() + " has " + process.getPCB().getWaitQueueTime() + " time left in the wait queue");
+            System.out.println("The process with ID " +  process.getProcessID() + " is in it's " + process.getPCB().getTimeAtIO() + " time unit at I/O");
         }
         System.out.println("=======");
     }

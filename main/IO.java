@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -13,16 +14,19 @@ public class IO {
         this.waitQueue = new LinkedList<Process>();
     }
 
+    // Only one process makes progress on IO at any given time, right?
     public void tick() {
-        for (Process process : waitQueue) {
-            process.getPCB().setWaitQueueTime(process.getPCB().getWaitQueueTime() - 1); // Decrement on waitQueue
-        }
-        while (waitQueue.element() != null) {
-            
-        }
-
         if (!waitQueue.isEmpty()) {
+            Process process = waitQueue.element();
             getComputer().getCPUScheduler().setActive(true);
+
+            process.getPCB().setTimeAtIO(process.getPCB().getTimeAtIO() + 1); // Decrement on waitQueue
+            if (process.getPCB().getTimeAtIO() == 2) {
+                removeFromQueue(process);
+
+            }
+        } else {
+
         }
 
     }

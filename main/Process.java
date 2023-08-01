@@ -23,6 +23,7 @@ public class Process {
             readyToWaiting();
             this.processor.getComputer().getIO().getWaitQueue().add(this); //Add this process to waitQueue of IO
             getPCB().setProgramCounter(getPCB().getProgramCounter() + 1); //Need this here so it is handled before return, to avoid terminating before wait is done
+            return;
         }
 
         if (lastInstruction()) {
@@ -42,7 +43,7 @@ public class Process {
     }
 
     public Boolean IOInstruction() {
-        if (IORequestAtTimes.contains(getPCB().getProgramCounter())) { //If currentInstruction is an IO request
+        if (IORequestAtTimes.contains(getPCB().getProgramCounter()-1)) { //If currentInstruction is an IO request
             return true;
         } else {
             return false;
@@ -65,7 +66,7 @@ public class Process {
 
     public void readyToWaiting() {
         this.getPCB().setProcessState(State.WAITING);
-        this.getPCB().setWaitQueueTime(2); //2 ticks for I/O
+        this.getPCB().setTimeAtIO(1); //2 ticks for I/O
     }
 
     public void waitingToReady() {

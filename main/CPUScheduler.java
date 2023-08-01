@@ -11,6 +11,7 @@ public class CPUScheduler {
     private ArrayList<Process> processes;
     private Queue<Process> readyQueue = new LinkedList<Process>();
     private boolean active;
+    private int clock = 0;
 
 
     public CPUScheduler(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes ) {
@@ -73,6 +74,14 @@ public class CPUScheduler {
         this.active = active;
     }
    
+
+    public int getClock() {
+        return this.clock;
+    }
+
+    public void setClock(int clock) {
+        this.clock = clock;
+    }
 
    
 

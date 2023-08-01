@@ -3,8 +3,8 @@ package main;
 public class PCB {
     Process process;
     State processState;
-    int programCounter;
-    int waitQueueTime;
+    int programCounter = 0;
+    int timeAtIO = 0;
 
     public PCB() {
 
@@ -34,12 +34,12 @@ public class PCB {
         this.programCounter = programCounter;
     }
 
-    public int getWaitQueueTime() {
-        return this.waitQueueTime;
+    public int getTimeAtIO() {
+        return this.timeAtIO;
     } 
     
-    public void setWaitQueueTime(int waitQueueTime) {
-        this.waitQueueTime = waitQueueTime;
+    public void setTimeAtIO(int timeAtIO) {
+        this.timeAtIO = timeAtIO;
     }
     
 }
