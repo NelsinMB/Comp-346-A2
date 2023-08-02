@@ -1,12 +1,13 @@
 package main;
 
 public class PCB {
-    Process process;
-    State processState;
-    int programCounter = 0;
-    int timeAtIO;
+    private Process process;
+    private State processState;
+    private int programCounter = 0;
+    private int timeAtIO;
 
-    public PCB() {
+    public PCB(Process process) {
+        this.process = process;
         timeAtIO = 0;
     }
 
