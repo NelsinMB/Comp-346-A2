@@ -20,9 +20,13 @@ public class IO {
             Process process = waitQueue.element();
             getComputer().getCPUScheduler().setActive(true);
 
-            process.getPCB().setIOInstructionCount(process.getPCB().getIOInstructionCount() + 1); 
-            if (process.getPCB().getIOInstructionCount() == 3) { //Allow to start at 1 instead of 2, thus use 3
+            process.getPCB().setIOInstructionCount(process.getPCB().getIOInstructionCount() + 1);
+            if (process.getPCB().getIOInstructionCount() == 3) { // Allow to start at 1 instead of 2, thus use 3
                 removeFromQueue(process);
+                if (!waitQueue.isEmpty()) {
+                    process = waitQueue.element(); // fk it
+                    process.getPCB().setIOInstructionCount(process.getPCB().getIOInstructionCount() + 1); // fk it
+                }
             }
         } else {
 

@@ -32,9 +32,9 @@ public class FCFS extends CPUScheduler {
                 }
             }
 
-            super.setActive(false);
+            // super.setActive(false);
             while (!super.getReadyQueue().isEmpty()) {
-                super.setActive(true);
+                // super.setActive(true);
                 Process nextProcess = super.getReadyQueue().remove();
                 Processor freeProcessor = freeProcessor();
                 if (freeProcessor() != null) {
@@ -44,11 +44,10 @@ public class FCFS extends CPUScheduler {
                     break; // Leave while loop if no processor is free
                 }
             }
-            tick();
-
-            if (getActive() == false) {
+            if (getReadyQueue().isEmpty() && getComputer().getIO().getWaitQueue().isEmpty() && !activeProcessor()) {
                 break;
             }
+            tick();
 
             super.setClock(getClock() + 1);
 
@@ -56,16 +55,27 @@ public class FCFS extends CPUScheduler {
 
     }
 
+    public boolean activeProcessor() {
+        for (Processor processor : getProcessors()) {
+            if (processor.getCurrentProcess() != null && processor.getCurrentProcess().getPCB().getProcessState() == State.RUNNING) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void tick() {
         for (Processor processor : super.getProcessors()) {
             if (processor.getCurrentProcess() != null) {
-                super.setActive(true);
+                // super.setActive(true);
                 if (processor.getCurrentProcess().getPCB().getProcessState().equals(State.RUNNING)) {
                     processor.getCurrentProcess().executeInstruction();
                 }
-                if (processor.getCurrentProcess().getPCB().getProcessState() != State.RUNNING) {
-                    processor.setCurrentProcess(null);
-                }
+                    if (processor.getCurrentProcess().getPCB().getProcessState() != State.RUNNING)
+
+                        processor.setCurrentProcess(null);
+
+                
             }
             // Handle cases where process has entered WAITING or TERMINATED
 
@@ -92,7 +102,8 @@ public class FCFS extends CPUScheduler {
             if (process.getPCB().getTimeAtIO() != 0) {
 
                 System.out.println("Time at IO for process with process ID " + process.getProcessID() + " is "
-                        + process.getPCB().getTimeAtIO() + " (instruction :" + process.getPCB().getIOInstructionCount() + ")");
+                        + process.getPCB().getTimeAtIO() + " (instruction :" + process.getPCB().getIOInstructionCount()
+                        + ")");
             }
         }
         System.out.println("=======");

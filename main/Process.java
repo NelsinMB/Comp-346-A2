@@ -34,7 +34,7 @@ public class Process {
     }
 
     public Boolean lastInstruction() {
-        if (getPCB().getProgramCounter() == totalExecTime) {
+        if (getPCB().getProgramCounter() == (totalExecTime)) {
             return true;
         } else {
             return false;
@@ -51,7 +51,6 @@ public class Process {
 
     public void readyToTerminate() {
         this.getPCB().setProcessState(State.TERMINATED);
-        this.processor = null;
     }
 
     public void newToReady() {
