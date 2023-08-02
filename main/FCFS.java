@@ -32,9 +32,7 @@ public class FCFS extends CPUScheduler {
                 }
             }
 
-            // super.setActive(false);
             while (!super.getReadyQueue().isEmpty()) {
-                // super.setActive(true);
                 Process nextProcess = super.getReadyQueue().remove();
                 Processor freeProcessor = freeProcessor();
                 if (freeProcessor() != null) {
@@ -55,78 +53,12 @@ public class FCFS extends CPUScheduler {
 
     }
 
-    public boolean activeProcessor() {
-        for (Processor processor : getProcessors()) {
-            if (processor.getCurrentProcess() != null && processor.getCurrentProcess().getPCB().getProcessState() == State.RUNNING) {
-                return true;
-            }
-        }
-        return false;
-    }
+   
+    
 
-    public void tick() {
-        for (Processor processor : super.getProcessors()) {
-            if (processor.getCurrentProcess() != null) {
-                // super.setActive(true);
-                if (processor.getCurrentProcess().getPCB().getProcessState().equals(State.RUNNING)) {
-                    processor.getCurrentProcess().executeInstruction();
-                }
-                    if (processor.getCurrentProcess().getPCB().getProcessState() != State.RUNNING)
+   
 
-                        processor.setCurrentProcess(null);
 
-                
-            }
-            // Handle cases where process has entered WAITING or TERMINATED
-
-        }
-        System.out.println("======");
-        System.out.println("CLOCK: " + super.getClock());
-        for (Processor processor : super.getProcessors()) {
-            if (processor.getCurrentProcess() != null) {
-                System.out.println("Process ID:" + processor.getCurrentProcess().getProcessID());
-                System.out.println("Program counter (next instruction): "
-                        + processor.getCurrentProcess().getPCB().getProgramCounter());
-            }
-        }
-        for (Process process : getComputer().getIO().getWaitQueue()) {
-            if (process.getPCB().getTimeAtIO() == 0) {
-                System.out.println("Process ID:" + process.getProcessID());
-                System.out.println("Program counter (next instruction): "
-                        + process.getPCB().getProgramCounter());
-            }
-        }
-
-        System.out.println("Wait queue: ");
-        for (Process process : getComputer().getIO().getWaitQueue()) {
-            if (process.getPCB().getTimeAtIO() != 0) {
-
-                System.out.println("Time at IO for process with process ID " + process.getProcessID() + " is "
-                        + process.getPCB().getTimeAtIO() + " (instruction :" + process.getPCB().getIOInstructionCount()
-                        + ")");
-            }
-        }
-        System.out.println("=======");
-
-        getComputer().getIO().tick();
-
-    }
-
-    /*
-     * Processor freeProcessor
-     * This method runs through the ArrayList of processors checking whether any
-     * processor has a null currentProcess
-     * A null currentProcess indicates that the processor is currently free
-     * Returns a processor that is free, if there is one, else, returns null
-     */
-    public Processor freeProcessor() {
-        for (Processor processor : super.getProcessors()) {
-            if (processor.getCurrentProcess() == null) {
-                return processor;
-            }
-        }
-        return null;
-    }
 
     /*
      * void initialTransfer

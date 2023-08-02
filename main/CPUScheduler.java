@@ -9,7 +9,7 @@ public class CPUScheduler {
     private Computer computer;
     private ArrayList<Processor> processors;
     private ArrayList<Process> processes;
-    private Queue<Process> readyQueue = new LinkedList<Process>();
+    private LinkedList<Process> readyQueue = new LinkedList<Process>();
     private boolean active;
     private int clock = 0;
 
@@ -38,6 +38,87 @@ public class CPUScheduler {
         // *Need to manage processes on waitQueue *
     }
 
+    /*
+     * boolean activeProcessor()
+     * Returns true if a processor currently has a process on it, and that process is running.
+     * 
+     */
+    public boolean activeProcessor() {
+        for (Processor processor : getProcessors()) {
+            if (processor.getCurrentProcess() != null && processor.getCurrentProcess().getPCB().getProcessState() == State.RUNNING) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void tick() {
+        for (Processor processor : getProcessors()) {
+            if (processor.getCurrentProcess() != null) {
+                if (processor.getCurrentProcess().getPCB().getProcessState().equals(State.RUNNING)) {
+                    processor.getCurrentProcess().executeInstruction();
+                }
+                    if (processor.getCurrentProcess().getPCB().getProcessState() != State.RUNNING)
+
+                        processor.setCurrentProcess(null);
+
+                
+            }
+        }
+        
+        output();
+        getComputer().getIO().tick();
+
+    }
+
+    public void output() {
+        System.out.println("======");
+        System.out.println("CLOCK: " + getClock());
+        for (Processor processor : getProcessors()) {
+            if (processor.getCurrentProcess() != null) {
+                System.out.println("Process ID:" + processor.getCurrentProcess().getProcessID());
+                System.out.println("Program counter (next instruction): "
+                        + processor.getCurrentProcess().getPCB().getProgramCounter());
+            }
+        }
+        for (Process process : getComputer().getIO().getWaitQueue()) {
+            if (process.getPCB().getTimeAtIO() == 0) {
+                System.out.println("Process ID:" + process.getProcessID());
+                System.out.println("Program counter (next instruction): "
+                        + process.getPCB().getProgramCounter());
+            }
+        }
+
+        System.out.println("Wait queue: ");
+        for (Process process : getComputer().getIO().getWaitQueue()) {
+            if (process.getPCB().getTimeAtIO() != 0) {
+
+                System.out.println("Time at IO for process with process ID " + process.getProcessID() + " is "
+                        + process.getPCB().getTimeAtIO() + " (instruction :" + process.getPCB().getIOInstructionCount()
+                        + ")");
+            }
+        }
+        System.out.println("=======");
+    }
+
+    /*
+     * Processor freeProcessor
+     * This method runs through the ArrayList of processors checking whether any
+     * processor has a null currentProcess
+     * A null currentProcess indicates that the processor is currently free
+     * Returns a processor that is free, if there is one, else, returns null
+     */
+    public Processor freeProcessor() {
+        for (Processor processor : getProcessors()) {
+            if (processor.getCurrentProcess() == null) {
+                return processor;
+            }
+        }
+        return null;
+    }
+
+    
+
     public Computer getComputer() {
         return this.computer;
     }
@@ -62,8 +143,12 @@ public class CPUScheduler {
         this.processes = processes;
     }
     
-    public Queue<Process> getReadyQueue() {
+    public LinkedList<Process> getReadyQueue() {
         return this.readyQueue;
+    }
+
+    public void setReadyQueue(LinkedList<Process> readyQueue) {
+        this.readyQueue = readyQueue;
     }
 
     public boolean getActive() {

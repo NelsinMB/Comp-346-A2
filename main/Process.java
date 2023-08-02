@@ -2,7 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
-public class Process {
+public class Process implements Comparable<Process> {
     private String processID;
     private int arrivalTime;
     private int totalExecTime;
@@ -116,6 +116,11 @@ public class Process {
 
     public void setProcessor(Processor processor) {
         this.processor = processor;
+    }
+
+    @Override
+    public int compareTo(Process otherProcess) {
+        return Integer.compare(getTotalExecTime(), otherProcess.getTotalExecTime());
     }
 
 }
