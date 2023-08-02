@@ -5,10 +5,12 @@ public class PCB {
     private State processState;
     private int programCounter = 0;
     private int timeAtIO;
+    private int IOInstructionCount;
 
     public PCB(Process process) {
         this.process = process;
         timeAtIO = 0;
+        IOInstructionCount = 0;
     }
 
     public Process getProcess() {
@@ -43,4 +45,12 @@ public class PCB {
         this.timeAtIO = timeAtIO;
     }
     
+    public int getIOInstructionCount() {
+        return this.IOInstructionCount;
+    } 
+    
+    public void setIOInstructionCount(int IOInstructionCount) {
+        this.IOInstructionCount = IOInstructionCount;
+    }
+
 }

@@ -92,7 +92,7 @@ public class FCFS extends CPUScheduler {
             if (process.getPCB().getTimeAtIO() != 0) {
 
                 System.out.println("Time at IO for process with process ID " + process.getProcessID() + " is "
-                        + process.getPCB().getTimeAtIO());
+                        + process.getPCB().getTimeAtIO() + " (instruction :" + process.getPCB().getIOInstructionCount() + ")");
             }
         }
         System.out.println("=======");

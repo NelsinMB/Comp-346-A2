@@ -20,13 +20,16 @@ public class IO {
             Process process = waitQueue.element();
             getComputer().getCPUScheduler().setActive(true);
 
-            process.getPCB().setTimeAtIO(process.getPCB().getTimeAtIO() + 1); // Decrement on waitQueue
-            if (process.getPCB().getTimeAtIO() == 3) { //Allow to start at 1 instead of 2, thus use 3
+            process.getPCB().setIOInstructionCount(process.getPCB().getIOInstructionCount() + 1); 
+            if (process.getPCB().getIOInstructionCount() == 3) { //Allow to start at 1 instead of 2, thus use 3
                 removeFromQueue(process);
-
             }
         } else {
 
+        }
+
+        for (Process process : waitQueue) {
+            process.getPCB().setTimeAtIO(process.getPCB().getTimeAtIO() + 1);
         }
 
     }

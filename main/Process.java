@@ -65,11 +65,14 @@ public class Process {
 
     public void readyToWaiting() {
         getPCB().setProcessState(State.WAITING);
-        this.getPCB().setTimeAtIO(0); // 2 ticks for I/O
+        this.getPCB().setIOInstructionCount(0); // 2 ticks for I/O
+        this.getPCB().setTimeAtIO(0);
     }
 
     public void waitingToReady() {
         this.getPCB().setProcessState(State.READY);
+        this.getPCB().setTimeAtIO(0);
+        this.getPCB().setIOInstructionCount(0);
     }
 
     public String getProcessID() {
