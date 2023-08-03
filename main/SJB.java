@@ -29,11 +29,12 @@ public class SJB extends CPUScheduler {
             while (!super.getReadyQueue().isEmpty()) {
                 //Sort readyQueue in order of totalExecTime here.
                 Collections.sort(getReadyQueue(), new totalExecTimeComparator());
-                Process nextProcess = super.getReadyQueue().remove();
+                Process nextProcess = super.getReadyQueue().element();
                 Processor freeProcessor = freeProcessor();
                 if (freeProcessor() != null) {
                     freeProcessor.setCurrentProcess(nextProcess);
                     super.readyToRunning(freeProcessor, nextProcess);
+                    super.getReadyQueue().remove();
                 } else {
                     break; // Leave while loop if no processor is free
                 }

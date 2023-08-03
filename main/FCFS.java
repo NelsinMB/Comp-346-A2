@@ -31,11 +31,12 @@ public class FCFS extends CPUScheduler {
             }
 
             while (!super.getReadyQueue().isEmpty()) {
-                Process nextProcess = super.getReadyQueue().remove();
+                Process nextProcess = super.getReadyQueue().element();
                 Processor freeProcessor = freeProcessor();
                 if (freeProcessor() != null) {
                     freeProcessor.setCurrentProcess(nextProcess);
                     super.readyToRunning(freeProcessor, nextProcess);
+                    super.getReadyQueue().remove();
                 } else {
                     break; // Leave while loop if no processor is free
                 }
