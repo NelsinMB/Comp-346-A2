@@ -3,13 +3,13 @@ package main;
 import java.util.ArrayList;
 
 public class Process implements Comparable<Process> {
+    //Some questions
     private String processID;
     private int arrivalTime;
     private int totalExecTime;
     private ArrayList<Integer> IORequestAtTimes;
-    PCB pcb;
-    private Processor processor; // The processor the process is running on
-    
+    private PCB pcb;
+    private Processor processor;
 
     public Process(String processID, int arrivalTime, int totalExecTime, ArrayList<Integer> IORequestAtTimes) {
         this.processID = processID;
@@ -22,18 +22,13 @@ public class Process implements Comparable<Process> {
     public void executeInstruction() {
         if (IOInstruction()) {
             readyToWaiting();
-            this.processor.getComputer().getIO().getWaitQueue().add(this); // Add this process to waitQueue of IO
+            this.processor.getComputer().getIO().getWaitQueue().add(this); // Do we want this done here?
         } else if (lastInstruction()) {
             readyToTerminate();
             return;
         }
-
-        // *Make sure this should be after terminate
-            getPCB().setProgramCounter(getPCB().getProgramCounter() + 1);
-            this.getPCB().setTimeOnCPU(this.getPCB().getTimeOnCPU()+1);
-
-        
-
+        getPCB().setProgramCounter(getPCB().getProgramCounter() + 1);
+        this.getPCB().setTimeOnCPU(this.getPCB().getTimeOnCPU() + 1);
     }
 
     public Boolean lastInstruction() {
@@ -55,6 +50,7 @@ public class Process implements Comparable<Process> {
     public void readyToTerminate() {
         this.getPCB().setProcessState(State.TERMINATED);
         this.getPCB().setTimeOnCPU(0);
+        setProcessor(null);
     }
 
     public void newToReady() {
@@ -82,6 +78,7 @@ public class Process implements Comparable<Process> {
     public void runningToReady() {
         this.getPCB().setProcessState(State.READY);
         this.getPCB().setTimeOnCPU(0);
+        setProcessor(null);
     }
 
     public String getProcessID() {

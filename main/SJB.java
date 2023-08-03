@@ -7,27 +7,18 @@ import java.util.Queue;
 
 public class SJB extends CPUScheduler {
 
-
-
     public SJB(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes) {
         super(computer, processors, processes);
-        //initialTransfer();
         execute();
 
     }
 
     public void execute() {
-
-        // Add processes that have arrival times that correspond with clock
         while (true) {
-            for (Process process : getProcesses()) {
-                if (super.getClock() == process.getArrivalTime()) {
-                    newToReady(process);
-                }
-            }
+            super.execute();
 
             while (!super.getReadyQueue().isEmpty()) {
-                //Sort readyQueue in order of totalExecTime here.
+                // Sort readyQueue in order of totalExecTime here.
                 Collections.sort(getReadyQueue(), new totalExecTimeComparator());
                 Process nextProcess = super.getReadyQueue().element();
                 Processor freeProcessor = freeProcessor();
@@ -49,9 +40,5 @@ public class SJB extends CPUScheduler {
         }
 
     }
-
-
-
-
 
 }

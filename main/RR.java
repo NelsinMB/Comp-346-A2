@@ -10,16 +10,10 @@ public class RR extends CPUScheduler {
     }
 
     public void execute() {
-
-        // Add processes that have arrival times that correspond with clock
         while (true) {
-            for (Process process : getProcesses()) {
-                if (super.getClock() == process.getArrivalTime()) {
-                    newToReady(process);
-                }
-            }
+            super.execute();
 
-            //For Round Robin preemption
+            // For Round Robin preemption
             for (Processor processor : getProcessors()) {
                 if (processor.getCurrentProcess() != null) {
                     Process process = processor.getCurrentProcess();
@@ -27,7 +21,7 @@ public class RR extends CPUScheduler {
                         runningToReady(processor, process);
                     }
                 }
-               
+
             }
 
             while (!super.getReadyQueue().isEmpty()) {
@@ -36,7 +30,8 @@ public class RR extends CPUScheduler {
                 if (freeProcessor() != null) {
                     freeProcessor.setCurrentProcess(nextProcess);
                     super.readyToRunning(freeProcessor, nextProcess);
-                    super.getReadyQueue().remove(); //Rather than removing when defining nextProcess, ensure a free processor is found then remove.
+                    super.getReadyQueue().remove(); // Rather than removing when instantiating nextProcess, ensure a free
+                                                    // processor is found then remove.
                 } else {
                     break; // Leave while loop if no processor is free
                 }

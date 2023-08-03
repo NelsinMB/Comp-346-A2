@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class CPUScheduler {
-
+    //Cleanish
     private Computer computer;
     private ArrayList<Processor> processors;
     private ArrayList<Process> processes;
@@ -19,6 +19,68 @@ public class CPUScheduler {
         this.processors = processors;
         this.processes = processes;
         this.active = true;
+    }
+
+    /*
+     * void execute() 
+     * Shared execute() code amongst FCFS, SJB, RR.
+     */
+    public void execute() {
+        for (Process process : getProcesses()) {
+            if (getClock() == process.getArrivalTime()) {
+                newToReady(process);
+            }
+        }
+
+    }
+
+    /*
+     * boolean activeProcessor()
+     * Returns true if a processor currently has a process on it, and that process is running.
+     * 
+     */
+    public boolean activeProcessor() {
+        for (Processor processor : getProcessors()) {
+            if (processor.getCurrentProcess() != null && processor.getCurrentProcess().getPCB().getProcessState() == State.RUNNING) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*
+     * Processor freeProcessor
+     * This method runs through the ArrayList of processors checking whether any
+     * processor has a null currentProcess
+     * A null currentProcess indicates that the processor is currently free
+     * Returns a processor that is free, if there is one, else, returns null
+     */
+    public Processor freeProcessor() {
+        for (Processor processor : getProcessors()) {
+            if (processor.getCurrentProcess() == null) {
+                return processor;
+            }
+        }
+        return null;
+    }
+
+    public void tick() {
+        for (Processor processor : getProcessors()) {
+            if (processor.getCurrentProcess() != null) {
+                if (processor.getCurrentProcess().getPCB().getProcessState().equals(State.RUNNING)) {
+                    processor.getCurrentProcess().executeInstruction();
+                }
+                    if (processor.getCurrentProcess().getPCB().getProcessState() != State.RUNNING)
+
+                        processor.setCurrentProcess(null);
+
+                
+            }
+        }
+        
+        output();
+        getComputer().getIO().tick();
+
     }
 
     public void newToReady(Process process) {
@@ -40,41 +102,8 @@ public class CPUScheduler {
     public void readyToWaiting(Process process) {
         process.readyToWaiting();
         computer.getIO().getWaitQueue().add(process); 
-        // *Need to manage processes on waitQueue *
     }
 
-    /*
-     * boolean activeProcessor()
-     * Returns true if a processor currently has a process on it, and that process is running.
-     * 
-     */
-    public boolean activeProcessor() {
-        for (Processor processor : getProcessors()) {
-            if (processor.getCurrentProcess() != null && processor.getCurrentProcess().getPCB().getProcessState() == State.RUNNING) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void tick() {
-        for (Processor processor : getProcessors()) {
-            if (processor.getCurrentProcess() != null) {
-                if (processor.getCurrentProcess().getPCB().getProcessState().equals(State.RUNNING)) {
-                    processor.getCurrentProcess().executeInstruction();
-                }
-                    if (processor.getCurrentProcess().getPCB().getProcessState() != State.RUNNING)
-
-                        processor.setCurrentProcess(null);
-
-                
-            }
-        }
-        
-        output();
-        getComputer().getIO().tick();
-
-    }
 
     public void output() {
         System.out.println("======");
@@ -108,24 +137,6 @@ public class CPUScheduler {
             }
         }
     }
-
-    /*
-     * Processor freeProcessor
-     * This method runs through the ArrayList of processors checking whether any
-     * processor has a null currentProcess
-     * A null currentProcess indicates that the processor is currently free
-     * Returns a processor that is free, if there is one, else, returns null
-     */
-    public Processor freeProcessor() {
-        for (Processor processor : getProcessors()) {
-            if (processor.getCurrentProcess() == null) {
-                return processor;
-            }
-        }
-        return null;
-    }
-
-    
 
     public Computer getComputer() {
         return this.computer;

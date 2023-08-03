@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Processor {
+    //Clean
+
     private int processorID;
     private Process currentProcess;
     private Queue<Process> readyQueue = new LinkedList<Process>(); //Does each process still have a queue?

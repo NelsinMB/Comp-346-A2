@@ -1,9 +1,9 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Queue;
 
 public class Computer {
+    //Clean
 
     private Algorithm algorithm;
     private ArrayList<Processor> processors;
