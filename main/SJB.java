@@ -26,11 +26,16 @@ public class SJB extends CPUScheduler {
                     freeProcessor.setCurrentProcess(nextProcess);
                     super.readyToRunning(freeProcessor, nextProcess);
                     super.getReadyQueue().remove();
+                    if (nextProcess.getRanBefore() == false) {
+                        nextProcess.setResponseTime(getClock()-nextProcess.getArrivalTime());
+                        nextProcess.setRanBefore(true);
+                    }
                 } else {
                     break; // Leave while loop if no processor is free
                 }
             }
             if (getReadyQueue().isEmpty() && getComputer().getIO().getWaitQueue().isEmpty() && !activeProcessor()) {
+                finalOutput();
                 break;
             }
             tick();

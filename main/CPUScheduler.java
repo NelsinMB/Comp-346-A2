@@ -148,11 +148,11 @@ public class CPUScheduler {
         System.out.println("======");
         System.out.println("FINAL OUTPUT");
         for (Processor processor : getProcessors()) {
-            System.out.println("Processor " + processor.getProcessorID() + " had " + processor.getActiveCycles() + " active cycles out of a possible " + getClock());
+            System.out.println("Processor " + processor.getProcessorID() + " had " + processor.getActiveCycles() + " active cycles out of a possible " + getClock() + ".");
         }
         int totalWaitTime = 0;
         for (Process process : getProcesses()) {
-            System.out.println("Process " + process.getProcessID() + " had a turnaround time of " + process.getTurnAroundTime() + " and a response time of " + process.getResponseTime());
+            System.out.println("Process " + process.getProcessID() + " had a turnaround time of " + process.getTurnAroundTime() + " and a response time of " + process.getResponseTime() + ".");
             
             totalWaitTime = totalWaitTime + process.getWaitTime();
         }

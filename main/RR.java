@@ -32,11 +32,16 @@ public class RR extends CPUScheduler {
                     super.readyToRunning(freeProcessor, nextProcess);
                     super.getReadyQueue().remove(); // Rather than removing when instantiating nextProcess, ensure a free
                                                     // processor is found then remove.
+                    if (nextProcess.getRanBefore() == false) {
+                        nextProcess.setResponseTime(getClock()-nextProcess.getArrivalTime());
+                        nextProcess.setRanBefore(true);
+                    }
                 } else {
                     break; // Leave while loop if no processor is free
                 }
             }
             if (getReadyQueue().isEmpty() && getComputer().getIO().getWaitQueue().isEmpty() && !activeProcessor()) {
+                finalOutput();
                 break;
             }
             tick();
