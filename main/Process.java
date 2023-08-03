@@ -11,20 +11,27 @@ public class Process implements Comparable<Process> {
     private PCB pcb;
     private Processor processor;
 
+    private int waitTime;
+    private int completionTime;
+    private int turnAroundTime; 
+    private int responseTime; 
+    private boolean ranBefore; //Will use for responseTime
+
     public Process(String processID, int arrivalTime, int totalExecTime, ArrayList<Integer> IORequestAtTimes) {
         this.processID = processID;
         this.arrivalTime = arrivalTime;
         this.totalExecTime = totalExecTime;
         this.IORequestAtTimes = IORequestAtTimes;
         this.pcb = new PCB(this);
+        this.ranBefore = false;
     }
 
-    public void executeInstruction() {
+    public void executeInstruction(int clock) {
         if (IOInstruction()) {
             readyToWaiting();
             this.processor.getComputer().getIO().getWaitQueue().add(this); // Do we want this done here?
         } else if (lastInstruction()) {
-            readyToTerminate();
+            readyToTerminate(clock);
             return;
         }
         getPCB().setProgramCounter(getPCB().getProgramCounter() + 1);
@@ -47,14 +54,16 @@ public class Process implements Comparable<Process> {
         }
     }
 
-    public void readyToTerminate() {
+    public void readyToTerminate(int clock) {
         this.getPCB().setProcessState(State.TERMINATED);
         this.getPCB().setTimeOnCPU(0);
         setProcessor(null);
+        setTurnAroundTime(clock - getArrivalTime());
     }
 
     public void newToReady() {
         this.getPCB().setProcessState(State.READY);
+        
     }
 
     public void readyToRunning(Processor processor) {
@@ -130,4 +139,43 @@ public class Process implements Comparable<Process> {
         return Integer.compare(getTotalExecTime(), otherProcess.getTotalExecTime());
     }
 
+    public int getWaitTime() {
+        return this.waitTime;
+    }
+
+    public void setWaitTime(int waitTime) {
+        this.waitTime = waitTime;
+    }
+
+    public int getCompletionTime() {
+        return this.completionTime;
+    }
+    
+    public void setCompletionTime(int completionTime) {
+        this.completionTime = completionTime;
+    }
+
+    public int getTurnAroundTime() {
+        return this.turnAroundTime;
+    }
+
+    public void setTurnAroundTime(int turnAroundTime) {
+        this.turnAroundTime = turnAroundTime;
+    }
+
+    public int getResponseTime() {
+        return this.responseTime;
+    }
+
+    public void setResponseTime(int responseTime) {
+        this.responseTime = responseTime;
+    }
+
+    public Boolean getRanBefore() {
+        return this.ranBefore;
+    }
+    
+    public void setRanBefore(Boolean ranBefore) {
+        this.ranBefore = ranBefore;
+    }
 }

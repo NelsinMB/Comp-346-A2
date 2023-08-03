@@ -31,6 +31,7 @@ public class IO {
 
         for (Process process : waitQueue) {
             process.getPCB().setTimeAtIO(process.getPCB().getTimeAtIO() + 1); //Increment time at I/O (not number of instructions) for all processes in queue.
+            process.setWaitTime(process.getWaitTime() + 1); //Probably could merge timeAtIO with waitTime
         }
 
     }

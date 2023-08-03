@@ -13,7 +13,7 @@ public class Sim {
 
     public static void main(String args[]) {
         try {
-            Scanner scanner = new Scanner(new File("/Users/nelsin/Desktop/Code/Assignment 2/input3.txt"));
+            Scanner scanner = new Scanner(new File("/Users/nelsin/Desktop/Code/Assignment 2/input4.txt"));
             String numOfCPUsString = scanner.nextLine();
             String timeQuantumString = scanner.nextLine();
             ArrayList<String> processesString = new ArrayList<String>();

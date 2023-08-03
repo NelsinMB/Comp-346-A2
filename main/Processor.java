@@ -10,6 +10,7 @@ public class Processor {
     private Process currentProcess;
     private Queue<Process> readyQueue = new LinkedList<Process>(); //Does each process still have a queue?
     private Computer computer;
+    private int activeCycles; //Used to calculate CPU utilization
 
     public Processor(Computer computer, int processorID) {
         this.computer = computer;
@@ -46,6 +47,14 @@ public class Processor {
 
     public void setProcessorID(int processorID) {
         this.processorID = processorID;
+    }
+
+    public int getActiveCycles() {
+        return this.activeCycles;
+    }
+
+    public void setActiveCycles(int activeCycles) {
+        this.activeCycles = activeCycles;
     }
     
 }
