@@ -31,9 +31,9 @@ public class CPUScheduler {
         process.readyToRunning(processor);
     }
 
-    public void runningToWaiting(Processor processor, Process process) {
+    public void runningToReady(Processor processor, Process process) {
         processor.setCurrentProcess(null);
-        process.runningToWaiting();
+        process.runningToReady();
         getReadyQueue().add(process);
     }
 

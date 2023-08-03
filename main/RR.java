@@ -24,7 +24,7 @@ public class RR extends CPUScheduler {
                 if (processor.getCurrentProcess() != null) {
                     Process process = processor.getCurrentProcess();
                     if (process.getPCB().getTimeOnCPU() == getComputer().getTimeQuantum()) {
-                        runningToWaiting(processor, process);
+                        runningToReady(processor, process);
                     }
                 }
                

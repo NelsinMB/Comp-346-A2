@@ -79,8 +79,8 @@ public class Process implements Comparable<Process> {
         this.getPCB().setIOInstructionCount(0);
     }
 
-    public void runningToWaiting() {
-        this.getPCB().setProcessState(State.WAITING);
+    public void runningToReady() {
+        this.getPCB().setProcessState(State.READY);
         this.getPCB().setTimeOnCPU(0);
     }
 
