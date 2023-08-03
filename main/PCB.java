@@ -6,6 +6,7 @@ public class PCB {
     private int programCounter = 0;
     private int timeAtIO;
     private int IOInstructionCount;
+    private int timeOnCPU;
 
     public PCB(Process process) {
         this.process = process;
@@ -51,6 +52,14 @@ public class PCB {
     
     public void setIOInstructionCount(int IOInstructionCount) {
         this.IOInstructionCount = IOInstructionCount;
+    }
+
+    public int getTimeOnCPU(){
+        return this.timeOnCPU;
+    }
+
+    public void setTimeOnCPU(int timeOnCPU) {
+        this.timeOnCPU = timeOnCPU;
     }
 
 }

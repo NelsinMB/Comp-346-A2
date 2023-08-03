@@ -1,26 +1,55 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
-public class RR extends CPUScheduler{
+public class RR extends CPUScheduler {
 
     public RR(Computer computer, ArrayList<Processor> processors, ArrayList<Process> processes) {
         super(computer, processors, processes);
-        //TODO Auto-generated constructor stub
+        execute();
     }
-    
-     /*
-     * This function adds processes passed to the scheduler into the ready queue.
-     * The head node is the process with the earliest arrival time, the tail node is the process with the latest arrival time.
-     */
-    public void loadProcessesIntoReadyQueue() {
-        Collections.sort(super.getProcesses(), Comparator.comparing(Process::getArrivalTime));
-        for (int index = 0; index < super.getProcesses().size(); index++) {
-            super.getReadyQueue().add(super.getProcesses().get(index));
+
+    public void execute() {
+
+        // Add processes that have arrival times that correspond with clock
+        while (true) {
+            for (Process process : getProcesses()) {
+                if (super.getClock() == process.getArrivalTime()) {
+                    newToReady(process);
+                }
+            }
+
+            //For Round Robin preemption
+            for (Processor processor : getProcessors()) {
+                if (processor.getCurrentProcess() != null) {
+                    Process process = processor.getCurrentProcess();
+                    if (process.getPCB().getTimeOnCPU() == getComputer().getTimeQuantum()) {
+                        runningToWaiting(processor, process);
+                    }
+                }
+               
+            }
+
+            while (!super.getReadyQueue().isEmpty()) {
+                Process nextProcess = super.getReadyQueue().element();
+                Processor freeProcessor = freeProcessor();
+                if (freeProcessor() != null) {
+                    freeProcessor.setCurrentProcess(nextProcess);
+                    super.readyToRunning(freeProcessor, nextProcess);
+                    super.getReadyQueue().remove(); //Rather than removing when defining nextProcess, ensure a free processor is found then remove.
+                } else {
+                    break; // Leave while loop if no processor is free
+                }
+            }
+            if (getReadyQueue().isEmpty() && getComputer().getIO().getWaitQueue().isEmpty() && !activeProcessor()) {
+                break;
+            }
+            tick();
+
+            super.setClock(getClock() + 1);
+
         }
-        
+
     }
 
 }

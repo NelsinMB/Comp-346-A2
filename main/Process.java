@@ -9,6 +9,7 @@ public class Process implements Comparable<Process> {
     private ArrayList<Integer> IORequestAtTimes;
     PCB pcb;
     private Processor processor; // The processor the process is running on
+    
 
     public Process(String processID, int arrivalTime, int totalExecTime, ArrayList<Integer> IORequestAtTimes) {
         this.processID = processID;
@@ -29,6 +30,8 @@ public class Process implements Comparable<Process> {
 
         // *Make sure this should be after terminate
             getPCB().setProgramCounter(getPCB().getProgramCounter() + 1);
+            this.getPCB().setTimeOnCPU(this.getPCB().getTimeOnCPU()+1);
+
         
 
     }
@@ -51,6 +54,7 @@ public class Process implements Comparable<Process> {
 
     public void readyToTerminate() {
         this.getPCB().setProcessState(State.TERMINATED);
+        this.getPCB().setTimeOnCPU(0);
     }
 
     public void newToReady() {
@@ -66,12 +70,18 @@ public class Process implements Comparable<Process> {
         getPCB().setProcessState(State.WAITING);
         this.getPCB().setIOInstructionCount(0); // 2 ticks for I/O
         this.getPCB().setTimeAtIO(0);
+        this.getPCB().setTimeOnCPU(0);
     }
 
     public void waitingToReady() {
         this.getPCB().setProcessState(State.READY);
         this.getPCB().setTimeAtIO(0);
         this.getPCB().setIOInstructionCount(0);
+    }
+
+    public void runningToWaiting() {
+        this.getPCB().setProcessState(State.WAITING);
+        this.getPCB().setTimeOnCPU(0);
     }
 
     public String getProcessID() {

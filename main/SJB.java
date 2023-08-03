@@ -50,17 +50,6 @@ public class SJB extends CPUScheduler {
     }
 
 
-    /*
-     * void initialTransfer
-     * This method is responsible for the initial transfer of processes to the readyQueue.
-     * The head node is the process with the earliest arrival time, the tail node is the process with the latest arrival time.
-     */
-    public void initialTransfer() {
-        Collections.sort(super.getProcesses(), Comparator.comparing(Process::getTotalExecTime));
-        for (int index = 0; index < super.getProcesses().size(); index++) {
-            super.getReadyQueue().add(super.getProcesses().get(index));
-        }
-    }
 
 
 

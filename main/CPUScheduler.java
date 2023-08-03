@@ -32,6 +32,12 @@ public class CPUScheduler {
         process.readyToRunning(processor);
     }
 
+    public void runningToWaiting(Processor processor, Process process) {
+        processor.setCurrentProcess(null);
+        process.runningToWaiting();
+        getReadyQueue().add(process);
+    }
+
     public void readyToWaiting(Process process) {
         process.readyToWaiting();
         computer.getIO().getWaitQueue().add(process); 
@@ -76,16 +82,20 @@ public class CPUScheduler {
         System.out.println("CLOCK: " + getClock());
         for (Processor processor : getProcessors()) {
             if (processor.getCurrentProcess() != null) {
-                System.out.println("Process ID:" + processor.getCurrentProcess().getProcessID());
-                System.out.println("Program counter (next instruction): "
+                System.out.println("    Process ID:" + processor.getCurrentProcess().getProcessID());
+                System.out.println("    Program counter (next instruction): "
                         + processor.getCurrentProcess().getPCB().getProgramCounter());
+                        System.out.println("    Processor ID: " + processor.getProcessorID());
+                        System.out.println("    Time on CPU: " + processor.getCurrentProcess().getPCB().getTimeOnCPU());
             }
         }
         for (Process process : getComputer().getIO().getWaitQueue()) {
             if (process.getPCB().getTimeAtIO() == 0) {
-                System.out.println("Process ID:" + process.getProcessID());
-                System.out.println("Program counter (next instruction): "
+                System.out.println("    Process ID:" + process.getProcessID());
+                System.out.println("    Program counter (next instruction): "
                         + process.getPCB().getProgramCounter());
+                        System.out.println("    Processor ID: " + process.getProcessor().getProcessorID());
+                        System.out.println("    Time on CPU: " + process.getPCB().getTimeOnCPU());
             }
         }
 
@@ -98,7 +108,6 @@ public class CPUScheduler {
                         + ")");
             }
         }
-        System.out.println("=======");
     }
 
     /*
